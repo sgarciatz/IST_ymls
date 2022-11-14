@@ -1,0 +1,318 @@
+    openapi: 3.0.0
+    info:
+      title: Videogames API
+      description: This API is in charge of managing the actions relative to the videogames data
+      version: 0.1.9
+    servers:
+      - url: http://api.videogames.com/v1
+        description: Optional server description, e.g. Main (production) server
+    paths:
+      /get-games:
+        get:
+          summary: Returns all the videogames in the database.
+          description: Returns a list with all the videogames from the cloud database.
+          responses:
+            '200':    # status code
+              description: OK
+              content:
+                application/json:
+                  schema: 
+                    $ref: '#/components/schemas/Videogame'
+            '404': # Not found
+              description: Not found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Database not found.
+                    
+      /get-games/{gameId}:
+        get:
+          description: Returns a videogame by its ID.
+          parameters: 
+          - name: gameId
+            in: path
+            required: true
+            description: The identifier of an user.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200':
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Videogame'
+            '404':
+              description: Not Found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Game not found.
+                    
+      /insert-game:
+        post:
+          summary: Inserts a new game in the cloud database.
+          description: Inserts a new game in the cloud database.
+          requestBody:
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/Videogame'
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame inserted successfully.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: This game already exists.
+
+      /remove-game/{gameId}:
+        delete:
+          summary: Delete a videogame given its ID.
+          parameters: 
+          - name: gameId
+            in: path
+            required: true
+            description: Identifier of an user.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200': # status code
+              description: OK
+              content:
+                text/plain:
+                  schema: 
+                    type: string
+                    example: Videogame deleted.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.                    
+            '404':
+              description: Not found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame not found.
+            
+      /update-game/{gameId}:
+        patch:
+          summary: Updates the videogame data.
+          parameters: 
+          - name: gameId
+            in: path
+            required: true
+            description: Identifier of a game.
+            schema:
+              type: integer
+              format: int64
+          requestBody:
+            description: Update a videogame with properties to be changed.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Videogame'
+          responses:
+            '200': # status code
+              description: Videogame updated.
+              content:
+                text/plain:
+                  schema: 
+                    type: string
+                    example: Videogame updated.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+            '404':
+              description: Not found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame not found.
+                      
+      /test-quality/{gameId}:
+        get:
+          description: Test the quality of the chosen videogame from the cloud database
+          parameters: 
+          - name: gameId
+            in: path
+            description: Identifier of a game.
+            required: true
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200': # status code
+              description: OK
+              content:
+                application/json:
+                  schema: 
+                    $ref: '#/components/schemas/Videogame-test'
+            '404':
+              description: Not Found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame not found.
+                    
+      /buy-game/{gameId}:
+        post:
+          summary: Inserts a new game in the user library database.
+          parameters: 
+          - name: gameId
+            in: path
+            description: ID of game to insert in the user library.
+            required: true
+            schema:
+              type: integer
+              format: int64 
+          - name: userId
+            in: query
+            description: ID of user to insert the game.
+            required: true
+            schema:
+              type: integer
+              format: int64
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/User'
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame inserted successfully in the user library.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+
+      /play-game:
+        get:
+          description: Returns a videogame datastreaming to play it.
+          parameters: 
+          - name: gameId
+            in: query
+            description: Identifier of game to play.
+            required: true
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200': # status code
+              description: A boolean answer
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Videogame'
+            '404': # status code
+              description: Not found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame not found.
+    components:
+      schemas:
+        Videogame:
+          type: object
+          properties:
+            gameId:
+              type: integer
+              example: 1
+            videogame-name:
+              type: string
+              example: God Of War
+            genre:
+              type: string
+              example: Fantasia
+            files:
+              type: string
+              example: images,configuration files, design files
+          xml:
+            name: video-game
+            
+        Videogame-test:
+          type: object
+          properties:
+            gameId:
+              type: integer
+              example: 1
+            test-files:
+              type: string
+              example: latency=100ms, frequency = 120fps, CPU/GPU consumption
+            datetime:
+              type: string
+              pattern: '%Y-%m-%d %H:%M:%S'
+          xml:
+            name: video-game-test
+        User:
+          type: object
+          properties:
+            userId:
+              type: string
+              example: u100
+            username:
+              type: string
+              example: Juanito_2000
+            firstName:
+              type: string
+              example: Juan
+            lastName:
+              type: string
+              example: Díaz
+            email:
+              type: string
+              example: juanito.diaz@email.com
+            password:
+              type: string
+              example: password1234
+            phone:
+              type: string
+              example: '123456789'
+          xml:
+            name: user
+  
