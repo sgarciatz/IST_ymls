@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
+servers:
+  - url: http://api.example.com/v1
+    description: Optional server description, e.g. Main (production) server
+  - url: http://staging-api.example.com
+    description: Optional server description, e.g. Internal staging server for testing
+paths:
+  /register:
+    post:
+      summary: Submit a form full of information about the user
+      description: The user fill the fields of a form that will be used and validated to create a new account.
+      parameters:
+      - name: value
+        in: query
+        description: Value to store
+        required: true
+        schema:
+          type: string
+          example: Juanito
+      responses:
+        '201':    # status code
+          description: A JSON array of user names
+          content:
+            text/html:
+              schema:
+                type: array
+                items:
+                  type: string
+                  description: Hola
+  /user/login:
+    post:
+      summary: Submit the username and password to log in the aplication
+      description: Submit the username and password to log in the aplication
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+
+  /logout/{userId}:
+    get:
+      summary: Log out of the account currently logged in
+      description: Log out of the account currently logged in
+      responses:
+        '200':    # status code
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  type: string
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+          example: u100
+        username:
+          type: string
+          example: Juanito_2000
+        firstName:
+          type: string
+          example: Juan
+        lastName:
+          type: string
+          example: Díaz
+        email:
+          type: string
+          example: juanito.diaz@email.com
+        password:
+          type: string
+          example: password1234
+        phone:
+          type: string
+          example: '123456789'
+      xml:
+        name: user
+
+    Requirements:
+      type: object
+      properties:
+        cpu: 
+          type: string
+          example: Intel i5 5555K
+        gpu:
+          type: string
+          example: RTX 1235TI
+        ram:
+          type: string
+          example: 8 GB
+        disk:
+          type: string
+          example: 50 GB
+      xml:
+        name: requirements
+        
+    Videogame:
+      type: object
+      properties:
+        videogameId:
+          type: string
+          example: v100
+        name:
+          type: string
+          example: Pokemon Perla
+        description:
+          type: string
+          example: Creature collecting and roleplay
+        requirements:
+          $ref: '#/components/schemas/Requirements'
+
+
+
+      
