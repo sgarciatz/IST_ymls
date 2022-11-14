@@ -1,0 +1,211 @@
+    openapi: 3.0.0
+    info:
+      title: ServerHosting API
+      description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+      version: 0.1.9
+    paths:
+      /get-servers:
+        get:
+          summary: Returns all the servers that are created.
+          description: Returns a list with all the servers from the cloud database
+          responses:
+            '200':    # status code
+              description: OK
+              content:
+                application/json:
+                  schema: 
+                    $ref: '#/components/schemas/Server'
+            '404': # Not found
+              description: Not found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server not found.
+              
+      /get-servers/{serverId}:
+        get:
+          description: Returns a server specified by its ID.
+          parameters: 
+          - name: serverId
+            in: path
+            description: Identifier of a server
+            required: true
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200':
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Server'
+            '404':
+              description: Not Found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server not found.
+
+      /create-server:
+        post:
+          summary: Create and inserts a new server in the cloud database.
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/Server'
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server created successfully.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+              
+      /remove-server/{serverId}:
+        delete:
+          summary: Delete a server given its ID.
+          parameters: 
+          - name: serverId
+            in: path
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200': # status code
+              description: OK
+              content:
+                text/plain:
+                  schema: 
+                    type: string
+                    example: Server deleted.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.                    
+            '404':
+              description: Not found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server not found.
+                    
+      /assign:
+        post:
+          summary: Assigns the server to a principal user that bought it.
+          parameters:
+          - name: serverId
+            in: query
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+              format: int64
+          - name: userId
+            in: query
+            required: true
+            description: Identifier of an user.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server assigned successfully to the user.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+        
+      /unassign:
+        put:
+          summary: Unassigns the server to an user.
+          parameters:
+          - name: serverId
+            in: query
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+              format: int64
+          - name: userId
+            in: query
+            required: true
+            description: Identifier of an user.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server unassigned successfully to the user.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+    components:
+      schemas:
+        Server:
+          type: object
+          properties:
+            gameId:
+              type: integer
+              example: 1
+            server-name:
+              type: string
+              example: God Of War
+            capacity:
+              type: integer
+              example: 60
+            files:
+              type: string
+              example: images,configuration files
+          xml:
+            name: serve
+        
