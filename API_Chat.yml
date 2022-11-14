@@ -1,0 +1,325 @@
+openapi: 3.0.0
+info:
+  title: Chat API
+  description: This API is in charge of managing the actions relative to the user data 
+  version: 0.1.9
+paths:
+  /chat/message:
+    get: 
+      summary: Fetch all the messages sent to an user.
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          description: The identifier of an user
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: OK 
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/VoiceMessage'
+                example:
+                  - messageId:
+                      type: integer
+                      example: 1002002222
+                    senderUserId:
+                      type: int
+                      example: 100
+                    receiverUserId:
+                      type: string
+                      example: 200
+                    messageContent:
+                      type: string
+                      example: What's up friend?
+                    timestamp:
+                      type: string
+                      example: 2022-07-04*13:23:55
+                  - messageId:
+                      type: integer
+                      example: 100200333
+                    senderUserId:
+                      type: int
+                      example: 100
+                    receiverUserId:
+                      type: string
+                      example: 200
+                    messageContent:
+                      type: string
+                      example: Are you up?
+                    timestamp:
+                      type: string
+                      example: 2022-05-10*23:10:45  
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: The user specified does not exist.
+    post:
+      summary: Send a message to an user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Message sent.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Message could not be sent.
+    put:
+      summary: Modify a snet message.
+      parameters:
+        - in: query
+          name: messageId
+          required: true
+          description: The identifier of a sent message.
+          schema:
+            type: integer
+            example: 1002001111
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Message modified.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Message could not be found.
+    delete:
+      summary: Delete a sent message.
+      parameters:
+        - in: query
+          name: messageId
+          required: true
+          description: The identifier of a sent message.
+          schema:
+            type: integer
+            example: 100
+      
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Message deleted.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Message could not be deleted.
+
+  /chat/voice-message:
+    get: 
+      summary: Fetch all the voice messages sent to an user.
+      parameters:
+        - in: query
+          name: userId
+          required: true
+          description: The identifier of an user
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: OK 
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/VoiceMessage'
+                example:
+                  - voiceMessageId:
+                      type: integer
+                      example: 1002002222
+                    senderUserId:
+                      type: int
+                      example: 100
+                    receiverUserId:
+                      type: string
+                      example: 200
+                    voiceMessageContent:
+                      type: string
+                      example: '4c6f72656d20697073756d20646f6c6f722073697420616d65744c6f72656d20697073756d20646f6c6f722073697420616d65744c6f72656d20697073756d20646f6c6f722073697420616d6574'
+                    timestamp:
+                      type: string
+                      example: 2022-07-04*13:23:55
+                  - voiceMessageId:
+                      type: integer
+                      example: 100200333
+                    senderUserId:
+                      type: int
+                      example: 100
+                    receiverUserId:
+                      type: string
+                      example: 200
+                    voiceMessageContent:
+                      type: string
+                      example: '4c6f7272656d20697073756d20646f6c6f722073697420616d65744327849fdhj1l129837dfhj073756d20646f6c6f722073697420616d6574'
+                    timestamp:
+                      type: string
+                      example: 2020-05-02*19:29:15                      
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: The user specified does not exist.
+
+    post:
+      summary: Send a voice message to an user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoiceMessage'
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Voice message sent.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Voice message could not be sent.
+    put:
+      summary: Modify a sent voice message.
+      parameters:
+        - in: query
+          name: voiceMessageId
+          required: true
+          description: The identifier of a sent voice message.
+          schema:
+            type: integer
+            example: 100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoiceMessage'
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Voice message modified.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Voice message could not be found.
+    delete:
+      summary: Delete a sent voice message.
+      parameters:
+        - in: query
+          name: voiceMessageId
+          required: true
+          description: The identifier of a sent voice message.
+          schema:
+            type: integer
+            example: 100
+      
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Voice message deleted.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Voice message could not be deleted.
+
+
+
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        messageId:
+          type: integer
+          example: 1002001111
+        senderUserId:
+          type: int
+          example: 100
+        receiverUserId:
+          type: string
+          example: 200
+        messageContent:
+          type: string
+          example: What's up friend?
+        timestamp:
+          type: string
+          example: 2022-07-04*13:23:55
+      xml:
+        name: user
+    VoiceMessage:
+      type: object
+      properties:
+        voiceMessageId:
+          type: integer
+          example: 1002002222
+        senderUserId:
+          type: int
+          example: 100
+        receiverUserId:
+          type: string
+          example: 200
+        voiceMessageContent:
+          type: string
+          example: '4c6f72656d20697073756d20646f6c6f722073697420616d65744c6f72656d20697073756d20646f6c6f722073697420616d65744c6f72656d20697073756d20646f6c6f722073697420616d6574'
+        timestamp:
+          type: string
+          example: 2022-07-04*13:23:55
+      xml:
+        name: user        
