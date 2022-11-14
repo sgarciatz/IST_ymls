@@ -3,68 +3,213 @@ info:
   title: Sample API
   description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
   version: 0.1.9
-servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
 paths:
-  /register:
+  /users/register:
     post:
       summary: Submit a form full of information about the user
       description: The user fill the fields of a form that will be used and validated to create a new account.
-      parameters:
-      - name: value
-        in: query
-        description: Value to store
-        required: true
-        schema:
-          type: string
-          example: Juanito
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
       responses:
-        '201':    # status code
-          description: A JSON array of user names
+        '201':
+          description: Created
           content:
-            text/html:
+            text/plain:
               schema:
-                type: array
-                items:
-                  type: string
-                  description: Hola
-  /user/login:
+                type: string
+                example: Correctly registered user.
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: This account already exists.
+
+  /users/login:
     post:
       summary: Submit the username and password to log in the aplication
       description: Submit the username and password to log in the aplication
       operationId: login
       requestBody:
+      
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/User'
       responses:
         '200':    # status code
-          description: A JSON array of user names
+          description: OK
           content:
-            application/json:
+            text/plain:
               schema: 
                 type: array
-                items: 
-                  type: string
+                example: User logged in.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Username and/or password are incorrect.
 
-
-  /logout/{userId}:
+  /users/logout:
     get:
       summary: Log out of the account currently logged in
       description: Log out of the account currently logged in
       responses:
         '200':    # status code
-          description: A JSON array of user names
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Successful log out.
+
+  /users/{userId}:
+    get:
+      summary: Return a user by its ID.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The identificator of an user.
+          schema:
+            type : string
+            example: u100
+      responses: 
+        '200':
+          description: OK 
           content:
             application/json:
-              schema: 
-                type: array
-                items: 
-                  type: string
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.
+    put:
+      summary: Modify an user given its ID.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The identificator of an user.
+          schema:
+            type : string
+            example: u100
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User modified.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.
+    delete:
+      summary: Delete an user given its ID.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The identificator of an user.
+          schema:
+            type : string
+            example: u100
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User deleted.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.
+
+  /users?username:
+    get:
+      summary: Return all users that match the optional filter.
+      parameters:
+        - in: query
+          name: username
+          required: false
+          description: The string to filter by username.
+          schema:
+            type : string
+            example: juanito
+      responses: 
+        '200':
+          description: OK 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.
+
+  /users/ban/{userId}{banFlag}:
+    put:
+      summary: Ban or unban an user depending on the value of banFlag
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The identificator of an user.
+          schema:
+            type : string
+            example: u100
+        - name: banFlag
+          in: path
+          required: true
+          description: Flag to ban (true) or unban (false) an user
+          schema:
+            type: boolean
+            example: true
+      responses: 
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User banned.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.
+
 
 components:
   schemas:
@@ -94,39 +239,16 @@ components:
           example: '123456789'
       xml:
         name: user
+    UserLogin: 
+      type: object
+      properties:
+        username:
+          type: string
+          example: Juanito_2000
+        password:
+          type: string
+          example: a12_34_56_78_90a
 
-    Requirements:
-      type: object
-      properties:
-        cpu: 
-          type: string
-          example: Intel i5 5555K
-        gpu:
-          type: string
-          example: RTX 1235TI
-        ram:
-          type: string
-          example: 8 GB
-        disk:
-          type: string
-          example: 50 GB
-      xml:
-        name: requirements
-        
-    Videogame:
-      type: object
-      properties:
-        videogameId:
-          type: string
-          example: v100
-        name:
-          type: string
-          example: Pokemon Perla
-        description:
-          type: string
-          example: Creature collecting and roleplay
-        requirements:
-          $ref: '#/components/schemas/Requirements'
 
 
 
