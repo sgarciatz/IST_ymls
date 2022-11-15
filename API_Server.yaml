@@ -3,6 +3,8 @@
       title: ServerHosting API
       description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
       version: 0.1.9
+    servers:
+      - url: 'https://serverAPI.com'
     paths:
       /get-servers:
         get:
@@ -108,7 +110,7 @@
                     type: string
                     example: Server not found.
                     
-      /assign:
+      /assign-owner:
         post:
           summary: Assigns the server to a principal user that bought it.
           parameters:
@@ -149,7 +151,7 @@
                       type: string
                       example: Unauthorized action.
         
-      /unassign:
+      /unassign-owner:
         put:
           summary: Unassigns the server to an user.
           parameters:
@@ -189,6 +191,112 @@
                     schema:
                       type: string
                       example: Unauthorized action.
+      /start-server:
+        put:
+          summary: Starts up the server.
+          parameters:
+          - name: serverId
+            in: query
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '201':
+              description: Started server
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server started up successfully.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+      /stop-server:
+        put:
+          summary: Stops a running server server.
+          parameters:
+          - name: serverId
+            in: query
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '201':
+              description: Stopped server
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server stopped successfully.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+      /add-user:
+        post:
+          summary: Adds an user to an already created server.
+          parameters:
+          - name: serverId
+            in: query
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+              format: int64
+          - name: userId
+            in: query
+            required: true
+            description: Identifier of an user.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: User assigned successfully to the server.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
     components:
       schemas:
         Server:
@@ -199,13 +307,12 @@
               example: 1
             server-name:
               type: string
-              example: God Of War
+              example: Minecraft-server
             capacity:
               type: integer
               example: 60
             files:
               type: string
-              example: images,configuration files
+              example: images,configuration files,IP,hosting IP
           xml:
             name: serve
-        
