@@ -11,7 +11,7 @@ paths:
         - in: query
           name: userId
           required: true
-          description: The identifier of an user
+          description: The identifier of the user querying the API
           schema:
             type: integer
             example: 100
@@ -24,37 +24,7 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/VoiceMessage'
-                example:
-                  - messageId:
-                      type: integer
-                      example: 1002002222
-                    senderUserId:
-                      type: int
-                      example: 100
-                    receiverUserId:
-                      type: string
-                      example: 200
-                    messageContent:
-                      type: string
-                      example: What's up friend?
-                    timestamp:
-                      type: string
-                      example: 2022-07-04*13:23:55
-                  - messageId:
-                      type: integer
-                      example: 100200333
-                    senderUserId:
-                      type: int
-                      example: 100
-                    receiverUserId:
-                      type: string
-                      example: 200
-                    messageContent:
-                      type: string
-                      example: Are you up?
-                    timestamp:
-                      type: string
-                      example: 2022-05-10*23:10:45  
+
         '404':
           description: Not Found
           content:
@@ -85,7 +55,7 @@ paths:
                 type: string
                 example: Message could not be sent.
     put:
-      summary: Modify a snet message.
+      summary: Modify a sent message.
       parameters:
         - in: query
           name: messageId
@@ -148,7 +118,7 @@ paths:
         - in: query
           name: userId
           required: true
-          description: The identifier of an user
+          description: The identifier of the user querying the API
           schema:
             type: integer
             example: 100
@@ -161,37 +131,7 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/VoiceMessage'
-                example:
-                  - voiceMessageId:
-                      type: integer
-                      example: 1002002222
-                    senderUserId:
-                      type: int
-                      example: 100
-                    receiverUserId:
-                      type: string
-                      example: 200
-                    voiceMessageContent:
-                      type: string
-                      example: '4c6f72656d20697073756d20646f6c6f722073697420616d65744c6f72656d20697073756d20646f6c6f722073697420616d65744c6f72656d20697073756d20646f6c6f722073697420616d6574'
-                    timestamp:
-                      type: string
-                      example: 2022-07-04*13:23:55
-                  - voiceMessageId:
-                      type: integer
-                      example: 100200333
-                    senderUserId:
-                      type: int
-                      example: 100
-                    receiverUserId:
-                      type: string
-                      example: 200
-                    voiceMessageContent:
-                      type: string
-                      example: '4c6f7272656d20697073756d20646f6c6f722073697420616d65744327849fdhj1l129837dfhj073756d20646f6c6f722073697420616d6574'
-                    timestamp:
-                      type: string
-                      example: 2020-05-02*19:29:15                      
+                
         '404':
           description: Not Found
           content:
@@ -201,7 +141,7 @@ paths:
                 example: The user specified does not exist.
 
     post:
-      summary: Send a voice message to an user
+      summary: Send a voice message to an user.
       requestBody:
         content:
           application/json:
@@ -253,6 +193,7 @@ paths:
                 type: string
                 example: Voice message could not be found.
     delete:
+
       summary: Delete a sent voice message.
       parameters:
         - in: query
@@ -261,7 +202,7 @@ paths:
           description: The identifier of a sent voice message.
           schema:
             type: integer
-            example: 100
+            example: 1002002222
       
       responses: 
         '200':
@@ -278,9 +219,125 @@ paths:
               schema:
                 type: string
                 example: Voice message could not be deleted.
+  
+  /chat/broadcastMessage:
+    post:
+      summary: Send a message to all known users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      responses:
+        '200':
+          description: OK
+          content:  
+            text/plain:
+              schema:
+                type: string
+                example: Message Broadcasted
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: The message could not be broadcasted.
 
 
+  /chat/broadcastVoiceMessage:
+    post:
+      summary: Send a voice message to all known users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoiceMessage'
+      responses:
+        '200':
+          description: OK
+          content:  
+            text/plain:
+              schema:
+                type: string
+                example: Voice message Broadcasted
+        '400':
+          description: Bad request
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: The voice message could not be broadcasted.
 
+  /chat/message/findByContent:
+    get:
+      summary: Retrieve all messages given that its content matches the specified string.
+      parameters:
+        - in: query
+          name: userId
+          description: The identifier of the user querying the API
+          required: true
+          schema:
+            type: string
+            example: 100          
+        - in: query
+          name: filter
+          description: The string used to match the desired message 
+          required: true
+          schema:
+            type: string
+            example: What's
+      responses:
+        '200':
+          description: OK 
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Message'                   
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: No messages containing "What's" were found.
+
+  /chat/message/findByUser:
+    get:
+      summary: Retrieve all messages sent or recieved to/from an user.
+      parameters:
+        - in: query
+          name: userId
+          description: The identifier of the user querying the API
+          required: true
+          schema:
+            type: string
+            example: 100
+        - in: query
+          name: secondUserId
+          description: The identifier of the user whose comments are wanted.
+          required: true
+          schema:
+            type: string
+            example: 200
+      responses:
+        '200':
+          description: OK 
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Message'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Messages could not be retrieved
 components:
   schemas:
     Message:
