@@ -76,10 +76,10 @@ paths:
         - name: userId
           in: path
           required: true
-          description: The identificator of an user.
+          description: The identifier of an user.
           schema:
-            type : string
-            example: u100
+            type : integer
+            example: 100
       responses: 
         '200':
           description: OK 
@@ -100,10 +100,10 @@ paths:
         - name: userId
           in: path
           required: true
-          description: The identificator of an user.
+          description: The identifier of an user.
           schema:
-            type : string
-            example: u100
+            type : integer
+            example: 100
       requestBody:
         content:
           application/json:
@@ -130,10 +130,10 @@ paths:
         - name: userId
           in: path
           required: true
-          description: The identificator of an user.
+          description: The identifier of an user.
           schema:
-            type : string
-            example: u100
+            type : integer
+            example: 100
       responses: 
         '200':
           description: OK
@@ -150,7 +150,7 @@ paths:
                 type: string
                 example: User not found.
 
-  /users:
+  /users/filterByName:
     get:
       summary: Return all users that match the optional filter.
       parameters:
@@ -183,10 +183,10 @@ paths:
         - name: userId
           in: path
           required: true
-          description: The identificator of an user.
+          description: The identifier of an user.
           schema:
-            type : string
-            example: u100
+            type : integer
+            example: 100
         - name: banFlag
           in: path
           required: true
@@ -210,6 +210,88 @@ paths:
                 type: string
                 example: User not found.
 
+  /users/friends:
+    get:
+      summary: Fetch all the friends of an user
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          description: The identifier of the user querying the API.
+          schema:
+            type : integer
+            example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.          
+    post:
+      summary: Add a new user to the friendlist.
+      parameters:
+        - name: newFriendId
+          in: query
+          required: true
+          description: The identifier of the user that is going to be added to the friendlist.
+          schema:
+            type : integer
+            example: 100
+      responses:
+        '201':
+          description: Created
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User added to the friendlist.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found, could not be added to the friendlist.                 
+    delete:
+      summary: Delete a friend from the friendlist
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          description: The identifier of the user querying the API.
+          schema:
+            type : integer
+            example: 100
+        - name: unfriendUserId
+          in: query
+          required: true
+          description: The identifier of the user which is going to be removed from the friendlist
+          schema:
+            type: integer
+            example: 200
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User removed from the friendlist.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User could not be removed from the friendlist.    
 
 components:
   schemas:
@@ -217,8 +299,8 @@ components:
       type: object
       properties:
         userId:
-          type: string
-          example: u100
+          type: integer
+          example: 100
         username:
           type: string
           example: Juanito_2000
