@@ -7,9 +7,9 @@
       - url: http://api.videogames.com/v1
         description: Optional server description, e.g. Main (production) server
     paths:
-      /get-games:
+      /games:
         get:
-          summary: Returns all the videogames in the database.
+          summary: Returns a list with all the videogames from the cloud database.
           description: Returns a list with all the videogames from the cloud database.
           responses:
             '200':    # status code
@@ -25,9 +25,32 @@
                   schema:
                     type: string
                     example: Database not found.
-                    
+        post:
+          summary: Inserts a new game in the cloud database.
+          description: Inserts a new game in the cloud database.
+          requestBody:
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/Videogame'
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame inserted successfully.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: This game already exists.
       /games/{gameId}:
         get:
+          summary: Returns a videogame by its ID.
           description: Returns a videogame by its ID.
           parameters: 
           - name: gameId
@@ -53,6 +76,7 @@
                     example: Game not found.
         delete:
           summary: Delete a videogame given its ID.
+          description: Delete a videogame given its ID.
           parameters: 
           - name: gameId
             in: path
@@ -85,6 +109,7 @@
                     example: Videogame not found.
         patch:
           summary: Updates the videogame data.
+          description: Updates the videogame data.
           parameters: 
           - name: gameId
             in: path
@@ -131,6 +156,7 @@
                       
       /test-quality/{gameId}:
         get:
+          summary: Test the quality of the chosen videogame from the cloud database
           description: Test the quality of the chosen videogame from the cloud database
           parameters: 
           - name: gameId
@@ -154,34 +180,11 @@
                   schema:
                     type: string
                     example: Videogame not found.
-      /insert-game:
-        post:
-          summary: Inserts a new game in the cloud database.
-          description: Inserts a new game in the cloud database.
-          requestBody:
-            content:
-              application/json:
-                schema:
-                    $ref: '#/components/schemas/Videogame'
-          responses:
-            '201':
-              description: Created
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: Videogame inserted successfully.
-            '400':
-                description: Bad request
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: This game already exists.
-                    
+
       /buy-game/{gameId}:
         post:
           summary: Inserts a new game in the user library database.
+          description: Inserts a new game in the user library database.
           parameters: 
           - name: gameId
             in: path
@@ -197,11 +200,6 @@
             schema:
               type: integer
               format: int64
-          requestBody:
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/User'
           responses:
             '201':
               description: Created
@@ -225,11 +223,51 @@
                       type: string
                       example: Unauthorized action.
 
-      /play-game:
+      /play-game/{gameId}:
         get:
+          summary: Returns a videogame datastreaming to play it.
           description: Returns a videogame datastreaming to play it.
           parameters: 
           - name: gameId
+            in: path
+            description: Identifier of game to play.
+            required: true
+            schema:
+              type: integer
+              format: int6
+          - name: userId
+            in: query
+            description: Identifier of game to play.
+            required: true
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200': # status code
+              description: A boolean answer
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Videogame'
+            '404': # status code
+              description: Not found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame not found.
+        post:
+          summary: Send the videogames commands chosed by the user.
+          description: Send the videogames commands chosed by the user.
+          parameters: 
+          - name: gameId
+            in: path
+            description: Identifier of game to play.
+            required: true
+            schema:
+              type: integer
+              format: int6
+          - name: userId
             in: query
             description: Identifier of game to play.
             required: true
