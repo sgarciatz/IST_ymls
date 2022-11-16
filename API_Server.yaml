@@ -9,7 +9,7 @@
       /servers:
         get:
           summary: Returns all the servers that are created.
-          description: Returns a list with all the servers from the cloud database
+          description: Returns all the servers that are created.
           responses:
             '200':    # status code
               description: OK
@@ -26,6 +26,7 @@
                     example: Server not found.
         post:
           summary: Create and inserts a new server in the cloud database.
+          description: Create and inserts a new server in the cloud database.
           requestBody:
             required: true
             content:
@@ -51,6 +52,7 @@
       /servers/{serverId}:
         get:
           summary: Returns a server specified by its ID.
+          description: Returns a server specified by its ID.
           parameters: 
           - name: serverId
             in: path
@@ -58,7 +60,6 @@
             required: true
             schema:
               type: integer
-              format: int64
           responses:
             '200':
               description: OK
@@ -73,8 +74,48 @@
                   schema:
                     type: string
                     example: Server not found.
+        put:
+          summary: Update characteristic of the server specified by its identifier.
+          description: Update characteristic of the server specified by its identifier.
+          parameters: 
+          - name: serverId
+            in: path
+            description: Identifier of a server
+            required: true
+            schema:
+              type: integer
+              format: int64
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/Server'
+          responses:
+            '200':
+              description: OK
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server modified successfully.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters. 
+            '404':
+                description: Not found
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Server not found. 
         delete:
           summary: Delete a server given its ID.
+          description: Delete a server given its ID.
           parameters: 
           - name: serverId
             in: path
@@ -106,127 +147,11 @@
                     type: string
                     example: Server not found.
                     
-      /owner:
-        post:
-          summary: Assigns the server to a principal user that bought it.
-          parameters:
-          - name: serverId
-            in: query
-            required: true
-            description: Identifier of a server.
-            schema:
-              type: integer
-              format: int64
-          - name: userId
-            in: query
-            required: true
-            description: Identifier of an user.
-            schema:
-              type: integer
-              format: int64
-          responses:
-            '201':
-              description: Created
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: Server assigned successfully to the user.
-            '400':
-                description: Bad request
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: Invalid parameters.
-            '401':
-                description: Unauthorized 
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: Unauthorized action.
-        put:
-          summary: Modifies the server owner.
-          parameters:
-          - name: serverId
-            in: query
-            required: true
-            description: Identifier of a server.
-            schema:
-              type: integer
-              format: int64
-          - name: userId
-            in: query
-            required: true
-            description: Identifier of an user.
-            schema:
-              type: integer
-              format: int64
-          responses:
-            '201':
-              description: Created
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: Server unassigned successfully to the user.
-            '400':
-                description: Bad request
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: Invalid parameters.
-            '401':
-                description: Unauthorized 
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: Unauthorized action.
-        delete:
-          summary: Unassigns the server to an user.
-          parameters:
-          - name: serverId
-            in: query
-            required: true
-            description: Identifier of a server.
-            schema:
-              type: integer
-              format: int64
-          - name: userId
-            in: query
-            required: true
-            description: Identifier of an user.
-            schema:
-              type: integer
-              format: int64
-          responses:
-            '200':
-              description: OK
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: Server unassigned successfully to the user.
-            '400':
-                description: Bad request
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: Invalid parameters.
-            '401':
-                description: Unauthorized 
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: Unauthorized action.
+ 
       /start-server:
-        put:
-          summary: Starts up the server.
+        get:
+          summary: Starts up the server specified by its identifier.
+          description: Starts up the server specified by its identifier.
           parameters:
           - name: serverId
             in: query
@@ -234,7 +159,6 @@
             description: Identifier of a server.
             schema:
               type: integer
-              format: int64
           responses:
             '201':
               description: Started server
@@ -257,9 +181,17 @@
                     schema:
                       type: string
                       example: Unauthorized action.
+            '404':
+                description: Not found 
+                content:
+                  json/plain:
+                    schema:
+                      type: string
+                      example: Server not found.                        
       /stop-server:
-        put:
+        get:
           summary: Stops a running server server.
+          description: Stops a running server server.
           parameters:
           - name: serverId
             in: query
@@ -290,32 +222,33 @@
                     schema:
                       type: string
                       example: Unauthorized action.
-      /add-user:
-        post:
-          summary: Adds an user to an already created server.
+            '404':
+                description: Not found 
+                content:
+                  json/plain:
+                    schema:
+                      type: string
+                      example: Server not found.                        
+
+      /servers/{serverId}/whitelist:
+        get:
+          summary: Retrieves the whitelist of the server spedified by its whitelist.
+          description: Retrieves the whitelist of the server spedified by its whitelist.
           parameters:
           - name: serverId
-            in: query
+            in: path
             required: true
             description: Identifier of a server.
             schema:
               type: integer
-              format: int64
-          - name: userId
-            in: query
-            required: true
-            description: Identifier of an user.
-            schema:
-              type: integer
-              format: int64
           responses:
-            '201':
-              description: Created
+            '200':
+              description: OK 
               content:
-                text/plain:
+                application/json:
                   schema:
-                    type: string
-                    example: User assigned successfully to the server.
+                    $ref: '#/components/schemas/Whitelist'
+                    
             '400':
                 description: Bad request
                 content:
@@ -326,26 +259,135 @@
             '401':
                 description: Unauthorized 
                 content:
+                  json/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.    
+            '404':
+                description: Not found 
+                content:
+                  json/plain:
+                    schema:
+                      type: string
+                      example: Server not found.                          
+        put:
+          summary: Modify the server's whitelist (add users or remove users).
+          description: Modify the server's whitelist (add users or remove users).
+          parameters:
+          - name: serverId
+            in: path
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+          requestBody:
+             content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Whitelist'
+          responses:
+            '200':
+              description: OK
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server's whitelist modified.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid whilelist.
+            '401':
+                description: Unauthorized 
+                content:
                   text/plain:
                     schema:
                       type: string
                       example: Unauthorized action.
+            '404':
+                description: Not found 
+                content:
+                  json/plain:
+                    schema:
+                      type: string
+                      example: Server not found.
+
+        delete:
+          summary: Empties the server's whitelist.
+          description: Empties the server's whitelist.
+          parameters:
+            - name: serverId
+              in: path
+              required: true
+              description: Identifier of a server.
+              schema:
+                type: integer
+          responses:
+            '200':
+              description: OK
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server's whitelist emptied.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid whilelist.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+            '404':
+                description: Not found 
+                content:
+                  json/plain:
+                    schema:
+                      type: string
+                      example: Server not found.
+                      
     components:
       schemas:
         Server:
           type: object
           properties:
-            gameId:
+            serverId:
               type: integer
               example: 1
+            ownerId:
+              type: integer
+              example: 100
             server-name:
               type: string
               example: Minecraft-server
-            capacity:
-              type: integer
-              example: 60
-            files:
+            serverSpecs:
               type: string
-              example: images,configuration files,IP,hosting IP
+              example: MID-TIER
+            fileLocation:
+              type: string
+              example: https://www.example.com/
+            status:
+              type: string
+              example: RUNNING
+            whitelist:
+              $ref: '#/components/schemas/Whitelist'
           xml:
-            name: serve
+            name: server
+
+        Whitelist:
+          type: object
+          properties:
+            users:
+              type: array
+              example: [100, 200, 300]
+          xml:
+            name: whitelist
