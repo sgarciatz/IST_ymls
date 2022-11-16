@@ -6,7 +6,7 @@
     servers:
       - url: 'https://serverAPI.com'
     paths:
-      /get-servers:
+      /servers:
         get:
           summary: Returns all the servers that are created.
           description: Returns a list with all the servers from the cloud database
@@ -24,34 +24,6 @@
                   schema:
                     type: string
                     example: Server not found.
-              
-      /get-servers/{serverId}:
-        get:
-          description: Returns a server specified by its ID.
-          parameters: 
-          - name: serverId
-            in: path
-            description: Identifier of a server
-            required: true
-            schema:
-              type: integer
-              format: int64
-          responses:
-            '200':
-              description: OK
-              content:
-                application/json:
-                  schema:
-                    $ref: '#/components/schemas/Server'
-            '404':
-              description: Not Found
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: Server not found.
-
-      /create-server:
         post:
           summary: Create and inserts a new server in the cloud database.
           requestBody:
@@ -74,9 +46,33 @@
                   text/plain:
                     schema:
                       type: string
-                      example: Invalid parameters.
-              
-      /remove-server/{serverId}:
+                      example: Invalid parameters. 
+        
+      /servers/{serverId}:
+        get:
+          summary: Returns a server specified by its ID.
+          parameters: 
+          - name: serverId
+            in: path
+            description: Identifier of a server
+            required: true
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200':
+              description: OK
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Server'
+            '404':
+              description: Not Found
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server not found.
         delete:
           summary: Delete a server given its ID.
           parameters: 
@@ -110,7 +106,7 @@
                     type: string
                     example: Server not found.
                     
-      /assign-owner:
+      /owner:
         post:
           summary: Assigns the server to a principal user that bought it.
           parameters:
@@ -150,10 +146,8 @@
                     schema:
                       type: string
                       example: Unauthorized action.
-        
-      /unassign-owner:
         put:
-          summary: Unassigns the server to an user.
+          summary: Modifies the server owner.
           parameters:
           - name: serverId
             in: query
@@ -172,6 +166,45 @@
           responses:
             '201':
               description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Server unassigned successfully to the user.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Invalid parameters.
+            '401':
+                description: Unauthorized 
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: Unauthorized action.
+        delete:
+          summary: Unassigns the server to an user.
+          parameters:
+          - name: serverId
+            in: query
+            required: true
+            description: Identifier of a server.
+            schema:
+              type: integer
+              format: int64
+          - name: userId
+            in: query
+            required: true
+            description: Identifier of an user.
+            schema:
+              type: integer
+              format: int64
+          responses:
+            '200':
+              description: OK
               content:
                 text/plain:
                   schema:
