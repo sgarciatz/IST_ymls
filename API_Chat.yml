@@ -306,7 +306,7 @@ paths:
 
   /chat/message/findByUser:
     get:
-      summary: Retrieve all messages sent or recieved to/from an user.
+      summary: Retrieve all messages sent or received to/from an user.
       parameters:
         - in: query
           name: userId
