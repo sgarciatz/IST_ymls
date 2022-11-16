@@ -26,7 +26,7 @@
                     type: string
                     example: Database not found.
                     
-      /get-games/{gameId}:
+      /games/{gameId}:
         get:
           description: Returns a videogame by its ID.
           parameters: 
@@ -51,33 +51,6 @@
                   schema:
                     type: string
                     example: Game not found.
-                    
-      /insert-game:
-        post:
-          summary: Inserts a new game in the cloud database.
-          description: Inserts a new game in the cloud database.
-          requestBody:
-            content:
-              application/json:
-                schema:
-                    $ref: '#/components/schemas/Videogame'
-          responses:
-            '201':
-              description: Created
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                    example: Videogame inserted successfully.
-            '400':
-                description: Bad request
-                content:
-                  text/plain:
-                    schema:
-                      type: string
-                      example: This game already exists.
-
-      /remove-game/{gameId}:
         delete:
           summary: Delete a videogame given its ID.
           parameters: 
@@ -110,8 +83,6 @@
                   schema:
                     type: string
                     example: Videogame not found.
-            
-      /update-game/{gameId}:
         patch:
           summary: Updates the videogame data.
           parameters: 
@@ -183,6 +154,30 @@
                   schema:
                     type: string
                     example: Videogame not found.
+      /insert-game:
+        post:
+          summary: Inserts a new game in the cloud database.
+          description: Inserts a new game in the cloud database.
+          requestBody:
+            content:
+              application/json:
+                schema:
+                    $ref: '#/components/schemas/Videogame'
+          responses:
+            '201':
+              description: Created
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                    example: Videogame inserted successfully.
+            '400':
+                description: Bad request
+                content:
+                  text/plain:
+                    schema:
+                      type: string
+                      example: This game already exists.
                     
       /buy-game/{gameId}:
         post:
