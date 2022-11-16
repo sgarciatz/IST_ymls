@@ -7,6 +7,7 @@ paths:
   /chat/message:
     get: 
       summary: Fetch all the messages sent to an user.
+      description: Fetch all the messages sent to an user.
       parameters:
         - in: query
           name: userId
@@ -34,6 +35,7 @@ paths:
                 example: The user specified does not exist.
     post:
       summary: Send a message to an user
+      description: Send a message to an user
       requestBody:
         content:
           application/json:
@@ -56,6 +58,7 @@ paths:
                 example: Message could not be sent.
     put:
       summary: Modify a sent message.
+      description: Modify a sent message.
       parameters:
         - in: query
           name: messageId
@@ -86,6 +89,7 @@ paths:
                 example: Message could not be found.
     delete:
       summary: Delete a sent message.
+      description: Delete a sent message.
       parameters:
         - in: query
           name: messageId
@@ -114,6 +118,7 @@ paths:
   /chat/voice-message:
     get: 
       summary: Fetch all the voice messages sent to an user.
+      description: Fetch all the voice messages sent to an user.
       parameters:
         - in: query
           name: userId
@@ -142,6 +147,7 @@ paths:
 
     post:
       summary: Send a voice message to an user.
+      description: Send a voice message to an user.
       requestBody:
         content:
           application/json:
@@ -164,6 +170,7 @@ paths:
                 example: Voice message could not be sent.
     put:
       summary: Modify a sent voice message.
+      description: Modify a sent voice message.
       parameters:
         - in: query
           name: voiceMessageId
@@ -195,6 +202,7 @@ paths:
     delete:
 
       summary: Delete a sent voice message.
+      description: Delete a sent voice message.
       parameters:
         - in: query
           name: voiceMessageId
@@ -222,7 +230,8 @@ paths:
   
   /chat/broadcastMessage:
     post:
-      summary: Send a message to all known users
+      summary: Send a message to all known users.
+      description: Send a message to all known users.
       requestBody:
         content:
           application/json:
@@ -247,7 +256,8 @@ paths:
 
   /chat/broadcastVoiceMessage:
     post:
-      summary: Send a voice message to all known users
+      summary: Send a voice message to all known users.
+      description: Send a voice message to all known users.
       requestBody:
         content:
           application/json:
@@ -272,6 +282,7 @@ paths:
   /chat/message/findByContent:
     get:
       summary: Retrieve all messages given that its content matches the specified string.
+      description: Retrieve all messages given that its content matches the specified string.
       parameters:
         - in: query
           name: userId
@@ -307,6 +318,7 @@ paths:
   /chat/message/findByUser:
     get:
       summary: Retrieve all messages sent or received to/from an user.
+      description: Retrieve all messages sent or received to/from an user.
       parameters:
         - in: query
           name: userId
