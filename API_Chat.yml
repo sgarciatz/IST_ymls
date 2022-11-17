@@ -6,6 +6,7 @@ info:
 paths:
   /chat/messages:
     get: 
+      tags: [message]
       summary: Fetch all the messages sent to an user.
       description: Fetch all the messages sent to an user.
       parameters:
@@ -34,6 +35,7 @@ paths:
                 type: string
                 example: The user specified does not exist.
     post:
+      tags: [message]
       summary: Send a message to an user
       description: Send a message to an user
       requestBody:
@@ -57,6 +59,7 @@ paths:
                 type: string
                 example: Message could not be sent.
     put:
+      tags: [message]
       summary: Modify a sent message.
       description: Modify a sent message.
       parameters:
@@ -88,6 +91,7 @@ paths:
                 type: string
                 example: Message could not be found.
     delete:
+      tags: [message]
       summary: Delete a sent message.
       description: Delete a sent message.
       parameters:
@@ -117,6 +121,7 @@ paths:
 
   /chat/message/filter-by-content/:
     get:
+      tags: [message]
       summary: Retrieve all messages given that its content matches the specified string.
       description: Retrieve all messages given that its content matches the specified string.
       parameters:
@@ -133,7 +138,7 @@ paths:
           required: true
           schema:
             type: string
-            example: What's
+            example: What's up
       responses:
         '200':
           description: OK 
@@ -153,6 +158,7 @@ paths:
 
   /chat/message/find-by-user:
     get:
+      tags: [message]
       summary: Retrieve all messages sent to or received from an specific user.
       description: Retrieve all messages sent to or received from an specific user.
       parameters:
@@ -189,6 +195,7 @@ paths:
   
   /chat/message/broadcast:
     post:
+      tags: [message]
       summary: Send a message to all known users.
       description: Send a message to all known users.
       requestBody:
@@ -215,6 +222,7 @@ paths:
 
   /chat/voice-messages:
     get: 
+      tags: [voice message]
       summary: Fetch all the voice messages sent to an user.
       description: Fetch all the voice messages sent to an user.
       parameters:
@@ -244,6 +252,7 @@ paths:
                 example: The user specified does not exist.
 
     post:
+      tags: [voice message]
       summary: Send a voice message to an user.
       description: Send a voice message to an user.
       requestBody:
@@ -267,6 +276,7 @@ paths:
                 type: string
                 example: Voice message could not be sent.
     put:
+      tags: [voice message]
       summary: Modify a sent voice message.
       description: Modify a sent voice message.
       parameters:
@@ -298,7 +308,7 @@ paths:
                 type: string
                 example: Voice message could not be found.
     delete:
-
+      tags: [voice message]
       summary: Delete a sent voice message.
       description: Delete a sent voice message.
       parameters:
@@ -328,8 +338,9 @@ paths:
   
   /chat/voice-messages/filter-by-content:
     get:
-      summary: Retrieve all messages given that its content matches the specified string.
-      description: Retrieve all messages given that its content matches the specified string.
+      tags: [voice message]
+      summary: Retrieve all messages given that its transcription matches the specified string.
+      description: Retrieve all messages given that its transcription matches the specified string.
       parameters:
         - in: query
           name: userId
@@ -364,6 +375,7 @@ paths:
 
   /chat/voice-message/filter-by-user:
     get:
+      tags: [voice message]
       summary: Retrieve all messages sent or received to/from an user.
       description: Retrieve all messages sent or received to/from an user.
       parameters:
@@ -401,6 +413,7 @@ paths:
 
   /chat/voice-messages/broadcast:
     post:
+      tags: [voice message]
       summary: Send a voice message to all known users.
       description: Send a voice message to all known users.
       requestBody:
@@ -423,10 +436,6 @@ paths:
               schema:
                 type: string
                 example: The voice message could not be broadcasted.
-
-
-
-  
 
 components:
   schemas:

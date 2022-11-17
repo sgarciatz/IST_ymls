@@ -6,6 +6,7 @@ info:
 paths:
   /users/register:
     post:
+      tags: [user]
       summary: Submit a form full of information about the user
       description: The user fill the fields of a form that will be used and validated to create a new account.
       requestBody:
@@ -31,6 +32,7 @@ paths:
 
   /users/login:
     post:
+      tags: [user]
       summary: Submit the username and password to log in the aplication
       description: Submit the username and password to log in the aplication
       operationId: login
@@ -57,16 +59,24 @@ paths:
               schema: 
                 type: string
                 example: User logged in.
-        '404':
-          description: Not Found
+        '400':
+          description: Bad Request
           content:
             text/plain:
               schema:
                 type: string
                 example: Username and/or password are incorrect.
+        '404':
+          description: Not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.
 
   /users/logout:
     get:
+      tags: [user]
       summary: Log out of the account currently logged in
       description: Log out of the account currently logged in
       responses:
@@ -80,6 +90,7 @@ paths:
 
   /users/{userId}:
     get:
+      tags: [user]
       summary: Return a user by its ID.
       parameters:
         - name: userId
@@ -104,6 +115,7 @@ paths:
                 type: string
                 example: User not found.
     put:
+      tags: [user]
       summary: Modify an user given its ID.
       parameters:
         - name: userId
@@ -134,6 +146,7 @@ paths:
                 type: string
                 example: User not found.
     delete:
+      tags: [user]
       summary: Delete an user given its ID.
       parameters:
         - name: userId
@@ -161,6 +174,7 @@ paths:
 
   /users/filterByName:
     get:
+      tags: [user]
       summary: Return all users that match the optional filter.
       parameters:
         - in: query
@@ -187,6 +201,7 @@ paths:
 
   /users/ban/{userId}{banFlag}:
     put:
+      tags: [user]
       summary: Ban or unban an user depending on the value of banFlag
       parameters:
         - name: userId
@@ -221,6 +236,7 @@ paths:
 
   /users/friends:
     get:
+      tags: [friend]
       summary: Fetch all the friends of an user
       parameters:
         - name: userId
@@ -245,6 +261,7 @@ paths:
                 type: string
                 example: User not found.          
     post:
+      tags: [friend]
       summary: Add a new user to the friendlist.
       parameters:
         - name: newFriendId
@@ -270,6 +287,7 @@ paths:
                 type: string
                 example: User not found, could not be added to the friendlist.                 
     delete:
+      tags: [friend]
       summary: Delete a friend from the friendlist
       parameters:
         - name: userId
