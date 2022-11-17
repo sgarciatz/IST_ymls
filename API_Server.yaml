@@ -232,8 +232,8 @@
 
       /servers/{serverId}/whitelist:
         get:
-          summary: Retrieves the whitelist of the server spedified by its whitelist.
-          description: Retrieves the whitelist of the server spedified by its whitelist.
+          summary: Retrieves the whitelist of the server given its ID.
+          description: Retrieves the whitelist of the server given its ID.
           parameters:
           - name: serverId
             in: path
