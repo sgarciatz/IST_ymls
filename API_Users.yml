@@ -12,7 +12,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserLogin'
+              $ref: '#/components/schemas/User'
       responses:
         '201':
           description: Created
@@ -34,12 +34,21 @@ paths:
       summary: Submit the username and password to log in the aplication
       description: Submit the username and password to log in the aplication
       operationId: login
-      requestBody:
-      
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
+      parameters:
+        - name: username
+          in: query
+          required: true
+          description: The name of an user.
+          schema:
+            type : string
+            example: Juanito_2000        
+        - name: password
+          in: query
+          required: true
+          description: The password of the user.
+          schema:
+            type : string
+            example: password1234            
       responses:
         '200':    # status code
           description: OK
@@ -321,15 +330,7 @@ components:
           example: '123456789'
       xml:
         name: user
-    UserLogin: 
-      type: object
-      properties:
-        username:
-          type: string
-          example: Juanito_2000
-        password:
-          type: string
-          example: a12_34_56_78_90a
+
 
 
 
