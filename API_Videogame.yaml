@@ -172,7 +172,7 @@
               content:
                 application/json:
                   schema: 
-                    $ref: '#/components/schemas/Videogame-test'
+                    $ref: '#/components/schemas/VideogameTest'
             '404':
               description: Not Found
               content:
@@ -306,9 +306,9 @@
               type: string
               example: images,configuration files, design files
           xml:
-            name: video-game
+            name: videogame
             
-        Videogame-test:
+        VideogameTest:
           type: object
           properties:
             gameId:
@@ -321,38 +321,13 @@
               type: string
               pattern: '%Y-%m-%d %H:%M:%S'
           xml:
-            name: video-game-test
-        User:
-          type: object
-          properties:
-            userId:
-              type: string
-              example: u100
-            username:
-              type: string
-              example: Juanito_2000
-            firstName:
-              type: string
-              example: Juan
-            lastName:
-              type: string
-              example: Díaz
-            email:
-              type: string
-              example: juanito.diaz@email.com
-            password:
-              type: string
-              example: password1234
-            phone:
-              type: string
-              example: '123456789'
-          xml:
-            name: user
-
+            name: videogameTest
+        
         FrameBuffer:
           type: array
-          example: []
-
+          example: [frame1, fram2, frame3]
+          xml:
+            name: frameBuffer
         UserInteraction:
           type: object
           properties:
@@ -362,4 +337,5 @@
             action:
               type: string
               example: RELEASE 
-        
+          xml:
+            name: userInteraction
