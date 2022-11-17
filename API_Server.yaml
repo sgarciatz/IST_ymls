@@ -379,7 +379,9 @@
               type: string
               example: RUNNING
             whitelist:
-              $ref: '#/components/schemas/Whitelist'
+              type: array
+              items: 
+                $ref: '#/components/schemas/Whitelist'
           xml:
             name: server
 
@@ -387,7 +389,7 @@
           type: object
           properties:
             users:
-              type: array
+              type: string
               example: [100, 200, 300]
           xml:
             name: whitelist
