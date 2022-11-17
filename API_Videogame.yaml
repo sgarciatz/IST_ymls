@@ -223,10 +223,10 @@
                       type: string
                       example: Unauthorized action.
 
-      /play-game/{gameId}:
+      /gameplay/{gameId}:
         get:
-          summary: Returns a videogame datastreaming to play it.
-          description: Returns a videogame datastreaming to play it.
+          summary: Returns a buffer of frames containing 0, 1 or more frames.
+          description: Returns a buffer of frames containing 0, 1 or more frames of the videogame session identified by the user identifier and the videogame identifier.
           parameters: 
           - name: gameId
             in: path
@@ -234,7 +234,7 @@
             required: true
             schema:
               type: integer
-              format: int6
+              format: int64
           - name: userId
             in: query
             description: Identifier of game to play.
@@ -348,4 +348,18 @@
               example: '123456789'
           xml:
             name: user
-  
+
+        FrameBuffer:
+          type: array
+          example: []
+
+        UserInteraction:
+          type: object
+          properties:
+            keyCombination:
+              type: array
+              example: ['C', 'Cntrl', 'Shift']
+            action:
+              type: string
+              example: RELEASE 
+        
