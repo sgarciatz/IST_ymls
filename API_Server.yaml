@@ -232,8 +232,8 @@
 
       /servers/{serverId}/whitelist:
         get:
-          summary: Retrieves the whitelist of the server spedified by its whitelist.
-          description: Retrieves the whitelist of the server spedified by its whitelist.
+          summary: Retrieves the whitelist of the server given its ID.
+          description: Retrieves the whitelist of the server given its ID.
           parameters:
           - name: serverId
             in: path
@@ -379,7 +379,9 @@
               type: string
               example: RUNNING
             whitelist:
-              $ref: '#/components/schemas/Whitelist'
+              type: array
+              items: 
+                $ref: '#/components/schemas/Whitelist'
           xml:
             name: server
 
@@ -387,7 +389,7 @@
           type: object
           properties:
             users:
-              type: array
+              type: string
               example: [100, 200, 300]
           xml:
             name: whitelist
