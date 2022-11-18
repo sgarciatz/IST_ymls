@@ -446,7 +446,7 @@ components:
           type: integer
           example: 1002001111
         senderUserId:
-          type: int
+          type: integer
           example: 100
         receiverUserId:
           type: string
@@ -466,7 +466,7 @@ components:
           type: integer
           example: 1002002222
         senderUserId:
-          type: int
+          type: integer
           example: 100
         receiverUserId:
           type: string
