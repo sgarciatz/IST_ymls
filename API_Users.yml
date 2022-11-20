@@ -234,6 +234,97 @@ paths:
                 type: string
                 example: User not found.
 
+  /users/{userId}/subscriptionTier:
+    get:
+      tags: [subscription]
+      summary: Returns the type of subscriptionTier that the specified user currently has.
+      description: Returns the type of subscriptionTier that the specified user currently has.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The identifier of an user.
+          schema:
+            type : integer
+            example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: MID-END Hardware.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.          
+    put:
+      tags: [subscription]
+      summary: Modifies the subscriptionTier of an user with the new value specified.
+      description: Modifies the subscriptionTier of an user with the new value specified.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The identifier of an user.
+          schema:
+            type : integer
+            example: 100
+        - name: newSubscription
+          in: query
+          required: true
+          description: The new subscription plan of the user.
+          schema:
+            type : integer
+            example: 100            
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Changed subscription plan from MID-END to HIGH-END hardware. 
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.  
+    delete:
+      tags: [subscription]
+      summary: Cancels the actual cloud gaming subscription of the user.
+      description: Cancels the actual cloud gaming subscription of the user.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The identifier of an user.
+          schema:
+            type : integer
+            example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Current subscription plan cancelled.
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: User not found.  
+
+
   /users/friends:
     get:
       tags: [friend]
@@ -346,6 +437,9 @@ components:
         phone:
           type: string
           example: '123456789'
+        subscriptionTier:
+          type: string
+          example: MID-END Hardware
       xml:
         name: user
 

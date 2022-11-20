@@ -256,7 +256,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Videogame'
+                $ref: '#/components/schemas/FrameBuffer'
         '404': # status code
           description: Not found
           content:
@@ -266,8 +266,8 @@ paths:
                 example: Videogame not found.
     post:
       tags: [gameplay]
-      summary: Send the videogames commands chosed by the user.
-      description: Send the videogames commands chosed by the user.
+      summary: Send the videogames commands chosen by the user.
+      description: Send the videogames commands chosen by the user.
       parameters: 
       - name: gameId
         in: path
@@ -283,13 +283,19 @@ paths:
         schema:
           type: integer
           format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/UserInteraction'
       responses:
         '200': # status code
           description: OK
           content:
-            application/json:
+            text/plain:
               schema:
-                $ref: '#/components/schemas/Videogame'
+                type: string
+                example: UserInteraction recieved.
         '404': # status code
           description: Not found
           content:
@@ -329,6 +335,7 @@ components:
         datetime:
           type: string
           pattern: '%Y-%m-%d %H:%M:%S'
+          example: '2022-12-31 23:59:48'
       xml:
         name: videogameTest
     
