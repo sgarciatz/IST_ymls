@@ -5,6 +5,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls'
+                sh 'sh deploy_users_API.sh'
             }
         }
     }
