@@ -3,10 +3,10 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'docker build ./API_users -t ISTIC/API_users'
-                sh 'docker build ./API_serverHosting -t ISTIC/API_serverHosting'
-                sh 'docker build ./API_videogames -t ISTIC/API_videogames'
-                sh 'docker build ./API_chat -t ISTIC/API_chat'
+                sh 'docker build ./API_users -t istic/api_users'
+                sh 'docker build ./API_serverHosting -t istic/api_serverHosting'
+                sh 'docker build ./API_videogames -t istic/api_videogames'
+                sh 'docker build ./API_chat -t istic/api_chat'
             }
         }
          stage('test') {
@@ -16,10 +16,10 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh 'docker run -p 8081:8081 ISTIC/API_users:latest'
-                sh 'docker run -p 8082:8082 ISTIC/API_serverHosting:latest'
-                sh 'docker run -p 8083:8083 ISTIC/API_videogames:latest'
-                sh 'docker run -p 8084:8084 ISTIC/API_chat:latest'
+                sh 'docker run -p 8081:8081 istic/api_users:latest'
+                sh 'docker run -p 8082:8082 istic/api_serverHosting:latest'
+                sh 'docker run -p 8083:8083 istic/api_videogames:latest'
+                sh 'docker run -p 8084:8084 istic/api_chat:latest'
             }
         }
     }
