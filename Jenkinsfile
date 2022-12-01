@@ -9,7 +9,6 @@ pipeline {
                 sh 'docker build ./API_chat -t ISTIC/API_chat'
             }
         }
-    }       
          stage('test') {
             steps {
                 sh 'echo Testing'
@@ -23,4 +22,5 @@ pipeline {
                 sh 'docker run -p 8084:8084 ISTIC/API_chat:latest'
             }
         }
+    }
 }
