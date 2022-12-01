@@ -16,10 +16,10 @@ pipeline {
         }
         stage('deploy') {
             steps {
-                sh 'docker run -p 8081:8081 istic/api_users:latest'
-                sh 'docker run -p 8082:8082 istic/api_serverhosting:latest'
-                sh 'docker run -p 8083:8083 istic/api_videogames:latest'
-                sh 'docker run -p 8084:8084 istic/api_chat:latest'
+                sh 'docker run --detach -p 8081:8081 istic/api_users:latest'
+                sh 'docker run --detach -p 8082:8082 istic/api_serverhosting:latest'
+                sh 'docker run --detach -p 8083:8083 istic/api_videogames:latest'
+                sh 'docker run --detach -p 8084:8084 istic/api_chat:latest'
             }
         }
     }
