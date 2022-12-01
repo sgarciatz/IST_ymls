@@ -3,9 +3,13 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'pwd'
-                sh 'ls'
-                sh 'sh deploy_users_API.sh'
+                cd ./API_users
+                docker build . -t <your username>/node-web-app
+                cd ../
+                docker build . -t <your username>/node-web-app
+                docker build . -t <your username>/node-web-app
+                docker build . -t <your username>/node-web-app
+
             }
         }
     }
